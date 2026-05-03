@@ -18,6 +18,7 @@ using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Information Described below:-
 // Add services to the container.
 /* KNW_REACT :-That block configures MVC controllers and applies a global authorization rule:-
 (*)builder.Services.AddControllers(...) registers ASP.NET Core MVC controllers in the 
