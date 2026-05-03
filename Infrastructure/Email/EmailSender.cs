@@ -7,7 +7,8 @@ using Resend;
 
 namespace Infrastructure.Email;
 
-public class EmailSender(IServiceScopeFactory scopeFactory, IConfiguration config) : IEmailSender<User>
+public class EmailSender(IServiceScopeFactory scopeFactory, IConfiguration config) 
+: IEmailSender<User>
 {
     public async Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
     {

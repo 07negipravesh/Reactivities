@@ -145,13 +145,31 @@ public class AccountController(SignInManager<User> signInManager,
         return Ok();
     }
 
+    // SUMMARY: Builds and sends an email confirmation link to the user.
+    // This method generates a secure token, encodes it for safe URL use,
+    // builds a clickable verification link, and emails it to the user.
+    // Example: A new user registers → this sends them a "Verify your email" link
+    //          like: https://myapp.com/confirm-email?userId=abc123&code=xyz789
     private async Task SendConfirmationEmailAsync(User user, string email)
     {
+        // Generates a unique, one-time token tied to this user's account for email verification.
+        // Why: ASP.NET Identity uses this token to verify the user actually owns the email address.
+        // Example: code = "CfDJ8Kx...long random string...abc"
         var code = await signInManager.UserManager.GenerateEmailConfirmationTokenAsync(user);
+
+        // Converts the raw token bytes to a URL-safe Base64 string so it can be passed in a URL without breaking.
+        // Why: Tokens can contain special characters (+, /, =) that would corrupt a URL if not encoded.
+        // Example: "CfDJ8Kx+abc==" → "CfDJ8Kxabc" (safe for URLs)
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
+        // Builds the full confirmation URL that the user will click in their email.
+        // Why: The frontend needs both the userId and the code to verify and activate the account.
+        // Example: "https://myapp.com/confirm-email?userId=abc123&code=CfDJ8Kxabc"
         var confirmEmailUrl = $"{config["ClientAppUrl"]}/confirm-email?userId={user.Id}&code={code}";
 
+        // Sends the confirmation email containing the link to the user's email address.
+        // Why: The user must click this link to prove they own the email before their account is activated.
+        // Example: User receives an email with a "Click here to confirm your email" button linking to confirmEmailUrl.
         await emailSender.SendConfirmationLinkAsync(user, email, confirmEmailUrl);
     }
 
