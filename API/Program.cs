@@ -104,11 +104,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
+var clientUrl = builder.Configuration["ClientAppUrl"] ?? "https://localhost:3000";
 app.UseCors(x => x
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials()
-    .WithOrigins("http://localhost:3000", "https://localhost:3000"));
+    .WithOrigins("http://localhost:3000", "https://localhost:3000", clientUrl));
 
 app.UseAuthentication();
 app.UseAuthorization();
