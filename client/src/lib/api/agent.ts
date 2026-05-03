@@ -3,6 +3,8 @@ import { store } from '../stores/store';
 import { toast } from 'react-toastify';
 import { router } from '../../app/router/routes';
 
+
+// Feature Branches :-
 // Sets up an Axios HTTP client with request/response interceptors for the whole app.
 // Every API call goes through this agent — it shows a loading spinner, simulates
 // network delay in dev, and globally handles errors (400, 401, 403, 404, 500).
