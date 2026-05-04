@@ -10,6 +10,7 @@ export default function ForgotPasswordForm() {
     const { forgotPassword } = useAccount();
     const navigate = useNavigate();
 
+    // forget Password Form 
     const onSubmit = async (data: FieldValues) => {
         try {
             await forgotPassword.mutateAsync(data.email, {
